@@ -1,89 +1,147 @@
-# Sound event detection
-## Introduction
-  This code aims at semi-supervised and weakly-supervised sound event detection. The dataset utilized in our experiments is from DCASE (IEEE AASP Challenge on Detection and Classification of Acoustic Scenes and Events), more specifically, from [DCASE2018 task4](http://dcase.community/challenge2018/task-large-scale-weakly-labeled-semi-supervised-sound-event-detection) and [DCASE2019 task4](http://dcase.community/challenge2019/task-sound-event-detection-in-domestic-environments). The code embraces two methods we proposed to solve this task: [Specialized Decision Surface (SDS) and Disentangled Feature (DF)](https://arxiv.org/abs/1905.10091) for weakly-supervised SED and [Guided Learning (GL)](https://arxiv.org/abs/1906.02517) for weakly-labeled semi-supervised learning.  
-  
-  We're so glad if you're interested in using it for research purpose or DCASE participation. Please don't hesitate to contact us should you have any question.  
-  
-## Something about DCASE
-  The dataset utilized in our experiments is from [DCASE2018 task4](http://dcase.community/challenge2018/task-large-scale-weakly-labeled-semi-supervised-sound-event-detection) and [DCASE2019 task4](http://dcase.community/challenge2019/task-sound-event-detection-in-domestic-environments). We've encapsulated some interfaces to handle dataset of DCASE task4 and streams to read the data, so this code can be used directly for the future challenge (or as a basis for fine-tuning).  
-  
-  Actually, we exploited it to participate in DCASE2019 task4 and achieve the best performance on the evaluation set among all the submissions to the challenge ([challenge results](http://dcase.community/challenge2019/task-sound-event-detection-in-domestic-environments-results)). A challenge-related paper ([Guided Learning Convolution System for DCASE 2019 Task 4](https://arxiv.org/abs/1909.06178)) is accepeted by [DCASE2019 Workshop](http://dcase.community/workshop2019/) oral presentation.  
+# sound_event_detection
 
-## Main ideas comprised in the code
-### Specialized decision surface (SDS) and disentangled feature (DF)
-We propose specialized decision surface (SDS) and disentangled feature (DF) in paper [Specialized Decision Surface and Disentangled Feature for Weakly-Supervised Polyphonic Sound Event Detection](https://arxiv.org/abs/1905.10091).  
-
-There are mainly 3 contribution in our work:  
-  - The Multiple instance learning (MIL) framework with pooling module and the neural network is commonly utilized for the weakly-supervised learning task, base on which we compare the performances of different MIL approach including the instance-level and embedding-level approach and propose a method to generate frame-level probabilities for the embedding-level approach.  
-  - We propose a specialized decision surface for the embedding-level attention pooling. 
-  - Disentangled feature (DF) is proposed to ease the problem caused by the co-occurrence of categories. We describe it in detail in the paper.  
-  
-  The model architecture utilized in our experiments is the same as the PS-model discussed in the next section.  
+Sound Event Detection using Deep learning
 
 
-### Guided learning (GL)
-  We propose a method named Guided Learning (GL) forweakly-labeled semi-supervised SED in paper [Guided learning for weakly-labeled semi-supervised sound event detection](https://arxiv.org/abs/1906.02517).  
+## All Instructions to reproduce
 
-  Here are 2 model architectures utilized in our experiments:  
-  ![image](https://github.com/Kikyo-16/Sound_event_detection/blob/master/image/fig1.png)
+### Install Anaconda
 
-## How to use
-### Environment
-Keras 2.2.0 (using TensorFlow backend)  
-TensorFlow 1.8.0  
 
-### Quick start
-Scripts in "Scripts" directory help quick start.  
+- [Link](https://linuxize.com/post/how-to-install-anaconda-on-centos-7/) to install anaconda.
 
-(Before running scripts, make sure for the [data preparation](#user-content-data-preparation) )  
 
-You can try to run  
-#### sh scripts/cATP-2018.sh  
-to train model with cATP-SDS-DF1 on the dataset of DCASE2018 task4;  
 
-Run
-#### sh scripts/semi-2018.sh  
-to train model with GL on the dataset of DCASE2018 task4;  
+```
+sudo yum install wget
 
-Run
-#### sh scripts/semi-2019.sh  
-to train model on the dataset of DCASE2019 task4.  
+wget "https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh" -O "Anaconda3-2019.10-Linux-x86_64.sh" -c
 
-### Configure files  
-You can find details in example configure ctories (DCASE2018-task4, DCASE2018-task4_semi, DCASE2019-task4).  
+bash Anaconda3-2019.10-Linux-x86_64.sh
+```
 
-## Details of the code implement
-### Data preparation
-  `scripts` provides some example scripts to help data preparation:  
-    - `gen_feature-2018.sh` help extract feature for the dataset of DCASE2018 tas4  
-    - `gen_feature-2019.sh` help extract feature for the dataset of DCASE2019 tas4  
-    - `gen_label-2018.sh` help format labels of the dataset of DCASE2018 tas4  
-    - `gen_label-2019.sh` help format labels of the dataset of DCASE2019 tas4  
-    
-  Before running any example script to extract feature, make sure there are a audio directory to storedoriginal audio files and a feature directory to store output feature. The example script requires `data/wav` as the audio directory and `data/feature` as the feature directory.  
-  
-  You can down load audio files from the website of DCASE and store all the audio files in the audio directory before running the scripts.  
-  
-  If you experience any trouble downloading the audio files, you can contact the organizers of DCASE task4. Or send me an E-mail, I'll be glad to help you.  
-  
-  Similarly, before running any example script to generate labels, make sure there is a label directory to store labels. The example script requires `data/label` as the label directory.  
-  
-  We provide data lists in `data/text`. The only difference from the original dataset from DCASE2018 task4 is that we provide a file list `data/text/all-2018.csv` with noisy annotations for the combination of weakly labeled training and unlabeled in domain training set. The noisy annotations, as mentioned in our paper [Specialized Decision Surface and DisentangledFeature for Weakly-Supervised Polyphonic Sound Event Detection](https://arxiv.org/abs/1905.10091) are obtained roughly by using a PT-model to tag unlabeled data. We release it for reproducing our experiments and we'll be so glad if it is helpful to your research.  
-  
-### Source codes
-#### feature_extraction
-Tools to help extract feature and generate labels.  
-#### src
-Source codes. See details in the source codes.  
+### Commands to install NVIDIA display and CUDA drivers
+
+- [Link to install nvidia drivers and cuda](https://ahelpme.com/linux/centos7/install-cuda-and-nvidia-video-driver-under-centos-7/)
+
+```
+sudo yum update -y
+
+sudo yum install -y yum-utils
+
+sudo yum-config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-rhel7.repo
+
+sudo yum install -y epel-release
+
+sudo yum clean all
+
+sudo yum -y install nvidia-driver-latest-dkms
+
+sudo yum install kernel-devel
+
+dkms status
+```
+
+- Now cd to /usr/src/
+
+- *and use build similar to this*
+
+```
+dkms build nvidia/418.87.00
+
+wget "https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_384.81_linux-run"
+
+sudo sh cuda_9.0.176_384.81_linux.run
+```
+
+*To uninstall the CUDA Toolkit, run the uninstall script in /usr/local/cuda-9.0/bin*
+
+*To uninstall the NVIDIA Driver, ```run nvidia-uninstall```*
+
+
+*[Link](https://github.com/deepinsight/insightface/wiki/INSTALL-Cuda9-ON-Centos7) to remove Nvidia drivers and cuda when things go wrong*
+
+### Creating GCP bucket, GPU quota request and transfering files
+
+```
+git clone https://github.com/Kikyo-16/Sound_event_detection.git
+
+git clone https://github.com/turpaultn/DCASE2019_task4.git
+```
+
+- GCP - IAM  - Quota - GPU quota increase
+
+- *Created a bucket*
+
+- *Transfer files from google drive to bucket*
+
+```gcloud auth login (Updated to gcloud init)```
+
+### Installing gcsfuse to mount bucket
+
+- *Install GCSFuse from [here](https://github.com/GoogleCloudPlatform/gcsfuse/blob/master/docs/installing.md).*
+```
+gcsfuse kisha_bucket /kisha/data_bucket
+
+sudo yum install unzip
+
+sudo yum install dnf
+
+sudo dnf install unrar
+```
+
+### Unzip and Unrar everything to their folders,
+```
+unrar e  unlabel_in_domain.rar /home/kisharenee123/data/
+
+unzip test.zip -d /home/kisharenee123/data/
+
+sudo chmod -R 777 Sound_event_detection/data/wav/ (To tackle permission error if necessary)
+```
+- *then move every wav file to wav folder in data using mv command*
+
+### conda env creation and dependencies installation, all in this one script
+```
+sh conda_create_environment.sh
+
+conda activate dcase2018
+
+cd Sound_event_detection/data
+```
+### Renaming feature and label files and creating their respective folders
+```
+mv feature feature_txt
+
+mv label label_txt
+
+mkdir feature
+
+mkdir label
+```
+### Edit scripts/gen_feature-2019.sh and scripts/gen_label-2019.sh, remove eval line
+```
+sh scripts/gen_feature-2019.sh
+
+sh scripts/gen_label-2019.sh
+
+sudo conda install jupyterlab
+
+jupyter lab --ip=0.0.0.0 --no-browser --port=5000
+```
+- [Link](http://34.82.176.163:5000) to open Jupyter lab
+
 
 ### Reproduce DCASE2019 Task4 challenge results
-run  
-#### sh scripts/reproduce_Lin_ICT_task4_1.sh  
-#### sh scripts/reproduce_Lin_ICT_task4_2.sh  
-#### sh scripts/reproduce_Lin_ICT_task4_3.sh  (the first place)
-#### sh scripts/reproduce_Lin_ICT_task4_4.sh
 
-See details in `challenge_results`.
+- run
 
-## Contact us
-Please don't hesitate to contact us should you have any question. You can email me at `linliwei17g@ict.ac.cn` or `1174436431@qq.com`.
+```
+sh scripts/reproduce_Lin_ICT_task4_1.sh
+
+sh scripts/reproduce_Lin_ICT_task4_2.sh
+
+sh scripts/reproduce_Lin_ICT_task4_3.sh (the first place)
+
+sh scripts/reproduce_Lin_ICT_task4_4.sh
+```
+### See details in challenge_results.
